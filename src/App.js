@@ -1,16 +1,30 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import Child from "./Child";
 import "./App.css";
 
 function App() {
   const [title, setTitle] = useState("This is title");
   const [subTitle, setSubTitle] = useState("This is subTitle");
+  const [num, setNum] = useState(0);
 
   const callback = () => {
     setTitle("title is change");
   };
 
   const memoizedCallback = useCallback(callback, []);
+
+  function expensiveFn() {
+    let result = 0;
+
+    for (let i = 0; i < 100000; i++) {
+      result += i;
+    }
+
+    console.log(result);
+    return result;
+  }
+
+  const base = useMemo(expensiveFn, []);
 
   return (
     <div className="App">
@@ -20,6 +34,9 @@ function App() {
         改变副标题
       </button>
       <Child name="vae" onClick={memoizedCallback}></Child>
+
+      <h1>count: {num}</h1>
+      <button onClick={() => setNum(num + base)}>+1s</button>
     </div>
   );
 }
