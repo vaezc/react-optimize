@@ -1,6 +1,13 @@
 import React from "react";
 
-export default function Child(props) {
+function Child(props) {
   console.log(props.name);
-  return <div>{props.name}</div>;
+  return (
+    <div>
+      <button onClick={props.onClick}>改标题</button>
+      {props.name}
+    </div>
+  );
 }
+
+export default React.memo(Child);
