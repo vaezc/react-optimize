@@ -1,20 +1,10 @@
-import React, { useEffect, useState } from "react";
-import GrayState from "./GrayState";
+import React from "react";
+import useGray from "./useGray";
 
 function Child(props) {
   console.log(props.name);
 
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const changeVisible = (status) => {
-      setVisible(status.gray);
-    };
-    GrayState.attach(changeVisible);
-    return () => {
-      GrayState.detach(changeVisible);
-    };
-  }, []);
+  const visible = useGray("gray");
 
   return (
     <div>
