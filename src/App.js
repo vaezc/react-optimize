@@ -2,13 +2,12 @@ import { useState, useCallback, useMemo, useEffect } from "react";
 import Child from "./Child";
 import { OtherChild } from "./OtherChild";
 import "./App.css";
-import GrayContext from "./context";
+import GrayState from "./GrayState";
 
 function App() {
   const [title, setTitle] = useState("This is title");
   const [subTitle, setSubTitle] = useState("This is subTitle");
   const [num, setNum] = useState(0);
-  const [globalStatus, setGlobalStatus] = useState({});
 
   const callback = () => {
     setTitle("title is change");
@@ -32,25 +31,27 @@ function App() {
   useEffect(() => {
     console.log("get GrayState");
     setTimeout(() => {
-      setGlobalStatus({ gray: true });
+      console.log("Get GrayState");
+      const nextStatus = {
+        gray: true,
+      };
+      GrayState.updateStatus(nextStatus);
     }, 1000);
   }, []);
 
   return (
-    <GrayContext.Provider value={globalStatus}>
-      <div className="App">
-        <h1>{title}</h1>
-        <h2>{subTitle}</h2>
-        <button onClick={() => setSubTitle("subTitle 已经改变")}>
-          改变副标题
-        </button>
-        <Child name="vae" onClick={memoizedCallback}></Child>
+    <div className="App">
+      <h1>{title}</h1>
+      <h2>{subTitle}</h2>
+      <button onClick={() => setSubTitle("subTitle 已经改变")}>
+        改变副标题
+      </button>
+      <Child name="vae" onClick={memoizedCallback}></Child>
 
-        <h1>count: {num}</h1>
-        <button onClick={() => setNum(num + base)}>+1s</button>
-      </div>
+      <h1>count: {num}</h1>
+      <button onClick={() => setNum(num + base)}>+1s</button>
       <OtherChild></OtherChild>
-    </GrayContext.Provider>
+    </div>
   );
 }
 

@@ -1,13 +1,26 @@
-import React, { useContext } from "react";
-import GrayContext from "./context";
+import React, { useEffect, useState } from "react";
+import GrayState from "./GrayState";
+
 function Child(props) {
   console.log(props.name);
-  const grayState = useContext(GrayContext);
+
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const changeVisible = (status) => {
+      setVisible(status.gray);
+    };
+    GrayState.attach(changeVisible);
+    return () => {
+      GrayState.detach(changeVisible);
+    };
+  }, []);
+
   return (
     <div>
       <button onClick={props.onClick}>改标题</button>
       {props.name}
-      {grayState.gray && <div>灰度字段</div>}
+      {visible && <div>灰度字段</div>}
     </div>
   );
 }
